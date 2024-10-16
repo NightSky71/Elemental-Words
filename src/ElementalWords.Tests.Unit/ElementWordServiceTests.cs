@@ -1,7 +1,5 @@
-using ElementalWords.Models;
 using ElementalWords.Services;
 using FluentAssertions;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ElementalWords.Tests.Unit
 {
@@ -14,20 +12,48 @@ namespace ElementalWords.Tests.Unit
             { 
                 "Yes",
                 new List<List<string>>(){ 
-                    new() 
-                    { 
-                        "Yttrium (Y)", "Einsteinium (Es)"
-                    } 
+                    new() { "Yttrium (Y)", "Einsteinium (Es)" } 
+                }
+            },
+            new object[]
+            {
+                "Snack",
+                new List<List<string>>(){
+                    new() { "Sulfur (S)", "Nitrogen (N)", "Actinium (Ac)", "Potassium (K)" },
+                    new() { "Sulfur (S)", "Sodium (Na)", "Carbon (C)", "Potassium (K)" },
+                    new() { "Tin (Sn)", "Actinium (Ac)", "Potassium (K)" }
                 }
             },
         };
 
         [Theory]
         [MemberData(nameof(Data))]
-        public void Given_AWord_When_ElementWordServiceIsCalled_Then_OutputTheExpectSequencesOfElementalSymbols(string word, List<List<string>> expectedResult)
+        public void Given_AValidWord_When_ElementWordServiceIsCalled_Then_OutputTheExpectSequencesOfElementalSymbols(string word, List<List<string>> expectedResult)
         {
             // Arrange
             var elementalWordService = new ElementalWordService();
+
+            // Act
+            var results = elementalWordService.GetElementWords(word);
+
+            // Assert
+            results.Should().BeEquivalentTo(expectedResult);
+        }
+
+        [Theory]
+        [InlineData("snack")]
+        [InlineData("sNaCK")]
+        [InlineData("SNACK")]
+        public void Given_AValidWordWithDifferingCaptilisation_When_ElementWordServiceIsCalled_Then_OutputTheExpectSequencesOfElementalSymbols(string word)
+        {
+            // Arrange
+            var elementalWordService = new ElementalWordService();
+
+            var expectedResult = new List<List<string>>(){
+                    new() { "Sulfur (S)", "Nitrogen (N)", "Actinium (Ac)", "Potassium (K)" },
+                    new() { "Sulfur (S)", "Sodium (Na)", "Carbon (C)", "Potassium (K)" },
+                    new() { "Tin (Sn)", "Actinium (Ac)", "Potassium (K)" }
+                };
 
             // Act
             var results = elementalWordService.GetElementWords(word);
