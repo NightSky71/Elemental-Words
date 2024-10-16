@@ -1,6 +1,7 @@
 ﻿using ElementalWords.Models;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace ElementalWords.Services;
 
@@ -28,6 +29,9 @@ public class ElementalWordService
 
         if (string.IsNullOrEmpty(word))
             return elements;
+
+        if (!Regex.IsMatch(word, @"^[a-zA-Z]+$"))
+            throw new ArgumentException($"GetElementalWords - {word} can only contain letters");
 
         var elementalStrings = ProcessElementalWords(word.ToLower());
 
