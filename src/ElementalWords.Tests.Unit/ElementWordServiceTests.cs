@@ -5,7 +5,7 @@ namespace ElementalWords.Tests.Unit
 {
     public class ElementWordServiceTests
     {
-        public static IEnumerable<object[]> Data =>
+        public static IEnumerable<object[]> ValidWordsMemberData =>
         new List<object[]>
         {
             new object[] 
@@ -24,10 +24,34 @@ namespace ElementalWords.Tests.Unit
                     new() { "Tin (Sn)", "Actinium (Ac)", "Potassium (K)" }
                 }
             },
+            new object[]
+            {
+                "Beach",
+                new List<List<string>>(){
+                    new() { "Beryllium (Be)", "Actinium (Ac)", "Hydrogen (H)" },
+                }
+            },
+            new object[]
+            {
+                "Nag",
+                new List<List<string>>(){
+                    new() { "Nitrogen (N)", "Silver (Ag)" },
+                }
+            },
+            new object[]
+            {
+                "Coco",
+                new List<List<string>>(){
+                    new() { "Carbon (C)", "Oxygen (O)", "Carbon (C)", "Oxygen (O)" },
+                    new() { "Carbon (C)", "Oxygen (O)", "Cobalt (Co)" },
+                    new() { "Cobalt (Co)", "Carbon (C)", "Oxygen (O)" },
+                    new() { "Cobalt (Co)", "Cobalt (Co)" },
+                }
+            },
         };
 
         [Theory]
-        [MemberData(nameof(Data))]
+        [MemberData(nameof(ValidWordsMemberData))]
         public void Given_AValidWord_When_ElementWordServiceIsCalled_Then_OutputTheExpectSequencesOfElementalSymbols(string word, List<List<string>> expectedResult)
         {
             // Arrange
@@ -60,6 +84,23 @@ namespace ElementalWords.Tests.Unit
 
             // Assert
             results.Should().BeEquivalentTo(expectedResult);
+        }
+
+        [Theory]
+        [InlineData("Yes1")]
+        [InlineData("2123")]
+        [InlineData("*(!£$")]
+        public void Given_AnInvalidWordThatContainsSomeNonLetters_When_ElementWordServiceIsCalled_Then_ThrowArugmentException(string word)
+        {
+            // Arrange
+            var elementalWordService = new ElementalWordService();
+
+            // Act
+            Action act = () => elementalWordService.GetElementWords(word);
+
+            // Assert
+            act.Should().Throw<ArgumentException>()
+                .WithMessage($"{word} can only contain letters");
         }
     }
 }

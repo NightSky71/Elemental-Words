@@ -31,7 +31,7 @@ public class ElementalWordService
             return elements;
 
         if (!Regex.IsMatch(word, @"^[a-zA-Z]+$"))
-            throw new ArgumentException($"GetElementalWords - {word} can only contain letters");
+            throw new ArgumentException($"{word} can only contain letters");
 
         var elementalStrings = ProcessElementalWords(word.ToLower());
 
@@ -58,7 +58,10 @@ public class ElementalWordService
                 continue;
 
             if (string.IsNullOrEmpty(str.Substring(i)))
+            {
                 elements.Add($"{value.Element} ({value.Symbol})");
+                continue;
+            }
 
             var results = ProcessElementalWords(str.Substring(i));
 
