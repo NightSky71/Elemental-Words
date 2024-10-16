@@ -43,28 +43,24 @@ public class ElementalWordService
     {
         List<string> elements = new List<string>();
 
-        if (string.IsNullOrEmpty(str))
-            return new();
-
         ElementModel value;
 
         for (int i = 1; i <= 3; i++)
         {
-            if (str.Length >= i && _Elements.TryGetValue(str.Substring(0, i), out value))
-            {
-                if (string.IsNullOrEmpty(str.Substring(i)))
-                {
-                    elements.Add($"{value.Element} ({value.Symbol})");
-                }
-                else
-                {
-                    var results = ProcessElementalWords(str.Substring(i));
+            if(str.Length < i)
+                continue;
 
-                    foreach (var result in results)
-                    {
-                        elements.Add($"{value.Element} ({value.Symbol}),{result}");
-                    }
-                }
+            if (!_Elements.TryGetValue(str.Substring(0, i), out value))
+                continue;
+
+            if (string.IsNullOrEmpty(str.Substring(i)))
+                elements.Add($"{value.Element} ({value.Symbol})");
+
+            var results = ProcessElementalWords(str.Substring(i));
+
+            foreach (var result in results)
+            {
+                elements.Add($"{value.Element} ({value.Symbol}),{result}");
             }
         }
 
