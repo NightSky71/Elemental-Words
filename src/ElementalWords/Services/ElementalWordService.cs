@@ -25,53 +25,46 @@ public class ElementalWordService
 
     public List<List<string>> GetElementWords(string word)
     {
-        List<List<string>> elements = [];
-
         if (string.IsNullOrEmpty(word))
-            return elements;
+            return new();
 
         if (!Regex.IsMatch(word, @"^[a-zA-Z]+$"))
             throw new ArgumentException($"{word} can only contain letters");
 
-        var elementalStrings = ProcessElementalWords(word.ToLower());
+        var elementalWords = ProcessElementalWords(word.ToLower());
 
-        foreach (var elementalString in elementalStrings)
-        {
-            elements.Add(elementalString.Split(",").ToList());
-        }
-
-        return elements;
+        return elementalWords;
     }
 
-    private List<string> ProcessElementalWords(string str)
+    private List<List<string>> ProcessElementalWords(string str)
     {
-        List<string> elements = new List<string>();
-
-        ElementModel value;
+        var elementalWords = new List<List<string>>();
 
         for (int i = 1; i <= 3; i++)
         {
             if(str.Length < i)
                 continue;
 
-            if (!_Elements.TryGetValue(str.Substring(0, i), out value))
+            if (!_Elements.TryGetValue(str.Substring(0, i), out var value))
                 continue;
 
             if (string.IsNullOrEmpty(str.Substring(i)))
             {
-                elements.Add($"{value.Element} ({value.Symbol})");
+                elementalWords.Add( new() { $"{value.Element} ({value.Symbol})" } );
                 continue;
             }
 
             var results = ProcessElementalWords(str.Substring(i));
 
-            foreach (var result in results)
+            foreach (var elementWord in results)
             {
-                elements.Add($"{value.Element} ({value.Symbol}),{result}");
+                elementWord.Insert(0, $"{value.Element} ({value.Symbol})");
             }
+
+            elementalWords.AddRange(results);
         }
 
-        return elements;
+        return elementalWords;
     }
 
 }
