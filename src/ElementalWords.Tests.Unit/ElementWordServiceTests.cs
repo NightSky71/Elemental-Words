@@ -90,6 +90,7 @@ namespace ElementalWords.Tests.Unit
         [InlineData("Yes1")]
         [InlineData("2123")]
         [InlineData("*(!£$")]
+        [InlineData("français")]
         public void Given_AnInvalidWordThatContainsSomeNonLetters_When_ElementWordServiceIsCalled_Then_ThrowArugmentException(string word)
         {
             // Arrange
