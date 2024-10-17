@@ -7,20 +7,22 @@ namespace ElementalWords.Services;
 
 public class ElementalWordService
 {
-    private readonly Dictionary<string, ElementModel> _Elements;
+    private readonly Dictionary<string, ElementModel> _elements;
 
     public ElementalWordService()
     {
         var assembly = Assembly.GetExecutingAssembly();
         var resourceName = "ElementalWords.Data.Elements.json";
 
-        using Stream stream = assembly.GetManifestResourceStream(resourceName);
+        using Stream stream = assembly.GetManifestResourceStream(resourceName)
+            ?? throw new Exception($"Cannot find resource: {resourceName}");
+
         using StreamReader reader = new StreamReader(stream);
 
         var elements = JsonSerializer.Deserialize<IEnumerable<ElementModel>>(reader.ReadToEnd())
             ?? throw new JsonException("Failed to deserialize ElementModels from from Elements.json");
 
-        _Elements = elements.ToDictionary(x => x.Symbol.ToLower(), x => x);
+        _elements = elements.ToDictionary(x => x.Symbol.ToLower(), x => x);
     }
 
     public List<List<string>> TransformWordIntoElementWords(string word)
@@ -43,7 +45,7 @@ public class ElementalWordService
             if(str.Length < symbolLength)
                 continue;
 
-            if (!_Elements.TryGetValue(str.Substring(0, symbolLength), out var value))
+            if (!_elements.TryGetValue(str.Substring(0, symbolLength), out var value))
                 continue;
 
             // If there is a matching element take the remaining string
