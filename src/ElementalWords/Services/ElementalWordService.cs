@@ -23,7 +23,7 @@ public class ElementalWordService
         _Elements = elements.ToDictionary(x => x.Symbol.ToLower(), x => x);
     }
 
-    public List<List<string>> GetElementWords(string word)
+    public List<List<string>> TransformWordIntoElementWords(string word)
     {
         if (string.IsNullOrEmpty(word))
             return new();
@@ -31,9 +31,7 @@ public class ElementalWordService
         if (!Regex.IsMatch(word, @"^[a-zA-Z]+$"))
             throw new ArgumentException($"{word} can only contain letters");
 
-        var elementalWords = ProcessElementalWords(word.ToLower());
-
-        return elementalWords;
+        return ProcessElementalWords(word.ToLower());
     }
 
     private List<List<string>> ProcessElementalWords(string str)

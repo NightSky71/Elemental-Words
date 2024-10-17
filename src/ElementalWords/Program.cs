@@ -10,9 +10,9 @@ while (true)
     Console.Write("Input Word: ");
     var input = Console.ReadLine();
 
-    var result = elementalWordService.GetElementWords(input);
+    var elementalWords = elementalWordService.TransformWordIntoElementWords(input);
 
-    foreach (var elementalWord in result)
+    foreach (var elementalWord in elementalWords)
     {
         Console.WriteLine(string.Join(',', elementalWord));
     }
