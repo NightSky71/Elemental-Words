@@ -18,7 +18,7 @@ public class ElementalWordService
         using StreamReader reader = new StreamReader(stream);
 
         var elements = JsonSerializer.Deserialize<IEnumerable<ElementModel>>(reader.ReadToEnd())
-            ?? throw new JsonException("Failed to retrieve elements from Elements.json");
+            ?? throw new JsonException("Failed to deserialize ElementModels from from Elements.json");
 
         _Elements = elements.ToDictionary(x => x.Symbol.ToLower(), x => x);
     }
@@ -29,7 +29,7 @@ public class ElementalWordService
             return new();
 
         if (!Regex.IsMatch(word, @"^[a-zA-Z]+$"))
-            throw new ArgumentException($"{word} can only contain letters");
+            throw new ArgumentException($"Cannot process inputted word, the word: \"{word}\" can only contain letters");
 
         return ProcessElementalWords(word.ToLower());
     }
@@ -38,21 +38,25 @@ public class ElementalWordService
     {
         var elementalWords = new List<List<string>>();
 
-        for (int i = 1; i <= 3; i++)
+        for (int symbolLength = 1; symbolLength <= 2; symbolLength++)
         {
-            if(str.Length < i)
+            if(str.Length < symbolLength)
                 continue;
 
-            if (!_Elements.TryGetValue(str.Substring(0, i), out var value))
+            if (!_Elements.TryGetValue(str.Substring(0, symbolLength), out var value))
                 continue;
 
-            if (string.IsNullOrEmpty(str.Substring(i)))
+            // If there is a matching element take the remaining string
+            var remainingString = str.Substring(symbolLength);
+
+            if (string.IsNullOrEmpty(remainingString))
             {
                 elementalWords.Add( new() { $"{value.Element} ({value.Symbol})" } );
                 continue;
             }
 
-            var results = ProcessElementalWords(str.Substring(i));
+            // Recursively call the function again to process the remaining string
+            var results = ProcessElementalWords(remainingString);
 
             foreach (var elementWord in results)
             {

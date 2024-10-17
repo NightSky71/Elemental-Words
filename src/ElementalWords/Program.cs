@@ -7,13 +7,23 @@ var elementalWordService = new ElementalWordService();
 
 while (true)
 {
-    Console.Write("Input Word: ");
-    var input = Console.ReadLine();
-
-    var elementalWords = elementalWordService.TransformWordIntoElementWords(input);
-
-    foreach (var elementalWord in elementalWords)
+    try
     {
-        Console.WriteLine(string.Join(',', elementalWord));
+        Console.WriteLine();
+        Console.Write("Input Word: ");
+        var input = Console.ReadLine();
+
+        Console.WriteLine();
+
+        var elementalWords = elementalWordService.TransformWordIntoElementWords(input);
+
+        foreach (var elementalWord in elementalWords)
+        {
+            Console.WriteLine(string.Join(',', elementalWord));
+        }
+    }
+    catch (ArgumentException ex)
+    {
+        Console.WriteLine(ex.Message);
     }
 }
