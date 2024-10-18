@@ -1,4 +1,5 @@
-﻿using ElementalWords.Models;
+﻿using ElementalWords.Exceptions;
+using ElementalWords.Models;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.RegularExpressions;
@@ -31,7 +32,7 @@ public class ElementalWordService
             return new();
 
         if (!Regex.IsMatch(word, @"^[a-zA-Z]+$"))
-            throw new ArgumentException($"Cannot process inputted word, the word: \"{word}\" can only contain letters");
+            throw new ElementWordsException($"Cannot process inputted word, the word: \"{word}\" can only contain letters");
 
         return ProcessElementalWords(word.ToLower());
     }
@@ -57,7 +58,7 @@ public class ElementalWordService
                 continue;
             }
 
-            // Recursively call the function again to process the remaining string
+            // Recursively call the function again to process the remaining (not empty) string
             var results = ProcessElementalWords(remainingString);
 
             foreach (var elementWord in results)

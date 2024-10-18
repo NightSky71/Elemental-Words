@@ -1,3 +1,4 @@
+using ElementalWords.Exceptions;
 using ElementalWords.Services;
 using FluentAssertions;
 
@@ -100,7 +101,7 @@ namespace ElementalWords.Tests.Unit
             Action act = () => elementalWordService.TransformWordIntoElementWords(word);
 
             // Assert
-            act.Should().Throw<ArgumentException>()
+            act.Should().Throw<ElementWordsException>()
                 .WithMessage($"{word} can only contain letters");
         }
     }
