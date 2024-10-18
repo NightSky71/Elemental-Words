@@ -47,7 +47,6 @@ So before I actually write anything I've had a think about the problem and came 
 <h2>Closing Thoughts</h2>
 
 Overall I'm pretty happy with the solution it's fairly readable and can cope with many different conditions. 
-I think the recursion works quite well here and keeps the solution readable and tidy.
 
 There is a potential optimisation that can be made with substrings that crop up more than once.
 - For example the elmental words that make up `ack` in `snack` will be calculated twice. 
