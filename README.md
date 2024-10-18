@@ -4,9 +4,9 @@ This readme details the problem, my approach to solving it, the solution, and a 
 
 <h2>The Problem</h2>
 
-Each element of the periodic table has a symbol associated with it that can be used to construct a word. For example the word `"yes"` which can be created using Yttrium (`Y`) and Einsteinium (`Es`).
+Each element of the periodic table has a symbol associated with it that can be used to construct a word. For example the word `"yes"` can be created using two elemental symbols: Yttrium (`Y`) and Einsteinium (`Es`).
 
-Some words can have multiple solutions the word `snack` for example can be made from 3 distinct sequences of periodic element symbols.
+Some words can have multiple solutions the word `snack` for example can be made from 3 distinct sequences of periodic element symbols. Some words on the other hand do not have any solutions.
 
 ```
 ----------------------------------------------------
@@ -50,5 +50,5 @@ Overall I'm pretty happy with the solution it's fairly readable and can cope wit
 
 There is a potential optimisation that can be made with substrings that crop up more than once.
 - For example the elmental words that make up `ack` in `snack` will be calculated twice. 
-So perhaps the algorithm can record the elemental words for the substring `ack` into a dictionary to used again later
+So perhaps the algorithm can record the elemental words for the substring `ack` into a dictionary to be used again later
 

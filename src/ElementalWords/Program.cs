@@ -15,7 +15,7 @@ while (true)
 
         Console.WriteLine();
 
-        var elementalWords = elementalWordService.TransformWordIntoElementalWords(input);
+        var elementalWords = elementalWordService.ValidateAndProcessWord(input);
 
         if (elementalWords.Count == 0)
         {

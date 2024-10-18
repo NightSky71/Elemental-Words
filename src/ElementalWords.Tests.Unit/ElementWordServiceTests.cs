@@ -59,7 +59,7 @@ namespace ElementalWords.Tests.Unit
             var elementalWordService = new ElementalWordService();
 
             // Act
-            var results = elementalWordService.TransformWordIntoElementalWords(word);
+            var results = elementalWordService.ValidateAndProcessWord(word);
 
             // Assert
             results.Should().BeEquivalentTo(expectedResult);
@@ -81,7 +81,7 @@ namespace ElementalWords.Tests.Unit
                 };
 
             // Act
-            var results = elementalWordService.TransformWordIntoElementalWords(word);
+            var results = elementalWordService.ValidateAndProcessWord(word);
 
             // Assert
             results.Should().BeEquivalentTo(expectedResult);
@@ -98,7 +98,7 @@ namespace ElementalWords.Tests.Unit
             var elementalWordService = new ElementalWordService();
 
             // Act
-            Action act = () => elementalWordService.TransformWordIntoElementalWords(word);
+            Action act = () => elementalWordService.ValidateAndProcessWord(word);
 
             // Assert
             act.Should().Throw<ElementalWordsValidationException>()
@@ -114,7 +114,7 @@ namespace ElementalWords.Tests.Unit
             var elementalWordService = new ElementalWordService();
 
             // Act
-            Action act = () => elementalWordService.TransformWordIntoElementalWords(word);
+            Action act = () => elementalWordService.ValidateAndProcessWord(word);
 
             // Assert
             act.Should().Throw<ElementalWordsValidationException>()

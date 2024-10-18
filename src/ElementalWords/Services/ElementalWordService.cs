@@ -26,7 +26,7 @@ public class ElementalWordService
         _elements = elements.ToDictionary(x => x.Symbol.ToLower(), x => x);
     }
 
-    public List<List<string>> TransformWordIntoElementalWords(string word)
+    public List<List<string>> ValidateAndProcessWord(string word)
     {
         if (string.IsNullOrEmpty(word))
             throw new ElementalWordsValidationException($"Cannot process inputted word as it is null or empty");
