@@ -59,7 +59,7 @@ namespace ElementalWords.Tests.Unit
             var elementalWordService = new ElementalWordService();
 
             // Act
-            var results = elementalWordService.TransformWordIntoElementWords(word);
+            var results = elementalWordService.TransformWordIntoElementalWords(word);
 
             // Assert
             results.Should().BeEquivalentTo(expectedResult);
@@ -81,7 +81,7 @@ namespace ElementalWords.Tests.Unit
                 };
 
             // Act
-            var results = elementalWordService.TransformWordIntoElementWords(word);
+            var results = elementalWordService.TransformWordIntoElementalWords(word);
 
             // Assert
             results.Should().BeEquivalentTo(expectedResult);
@@ -92,17 +92,33 @@ namespace ElementalWords.Tests.Unit
         [InlineData("2123")]
         [InlineData("*(!£$")]
         [InlineData("français")]
-        public void Given_AnInvalidWordThatContainsSomeNonLetters_When_ElementWordServiceIsCalled_Then_ThrowArugmentException(string word)
+        public void Given_AnInvalidWordThatContainsSomeNonLetters_When_ElementWordServiceIsCalled_Then_ThrowElementalWordsValidationException(string word)
         {
             // Arrange
             var elementalWordService = new ElementalWordService();
 
             // Act
-            Action act = () => elementalWordService.TransformWordIntoElementWords(word);
+            Action act = () => elementalWordService.TransformWordIntoElementalWords(word);
 
             // Assert
-            act.Should().Throw<ElementWordsException>()
-                .WithMessage($"{word} can only contain letters");
+            act.Should().Throw<ElementalWordsValidationException>()
+                .WithMessage($"Cannot process inputted word, the word: \"{word}\" can only contain letters");
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Given_AnEmptyWord_When_ElementWordServiceIsCalled_Then_ThrowElementalWordsValidationException(string word)
+        {
+            // Arrange
+            var elementalWordService = new ElementalWordService();
+
+            // Act
+            Action act = () => elementalWordService.TransformWordIntoElementalWords(word);
+
+            // Assert
+            act.Should().Throw<ElementalWordsValidationException>()
+                .WithMessage($"Cannot process inputted word as it is null or empty");
         }
     }
 }

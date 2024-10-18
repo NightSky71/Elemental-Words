@@ -1,4 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using ElementalWords.Exceptions;
 using ElementalWords.Services;
 
 Console.WriteLine("Elemental Words");
@@ -15,14 +15,20 @@ while (true)
 
         Console.WriteLine();
 
-        var elementalWords = elementalWordService.TransformWordIntoElementWords(input);
+        var elementalWords = elementalWordService.TransformWordIntoElementalWords(input);
 
+        if (elementalWords.Count == 0)
+        {
+            Console.WriteLine($"No sequence of elemental symbols can be found for the word: {input}");
+            continue;
+        }
+            
         foreach (var elementalWord in elementalWords)
         {
             Console.WriteLine(string.Join(',', elementalWord));
         }
     }
-    catch (ArgumentException ex)
+    catch (ElementalWordsValidationException ex)
     {
         Console.WriteLine(ex.Message);
     }

@@ -26,18 +26,18 @@ public class ElementalWordService
         _elements = elements.ToDictionary(x => x.Symbol.ToLower(), x => x);
     }
 
-    public List<List<string>> TransformWordIntoElementWords(string word)
+    public List<List<string>> TransformWordIntoElementalWords(string word)
     {
         if (string.IsNullOrEmpty(word))
-            return new();
+            throw new ElementalWordsValidationException($"Cannot process inputted word as it is null or empty");
 
         if (!Regex.IsMatch(word, @"^[a-zA-Z]+$"))
-            throw new ElementWordsException($"Cannot process inputted word, the word: \"{word}\" can only contain letters");
+            throw new ElementalWordsValidationException($"Cannot process inputted word, the word: \"{word}\" can only contain letters");
 
-        return ProcessElementalWords(word.ToLower());
+        return ProcessStringIntoElementalSymbols(word.ToLower());
     }
 
-    private List<List<string>> ProcessElementalWords(string str)
+    private List<List<string>> ProcessStringIntoElementalSymbols(string str)
     {
         var elementalWords = new List<List<string>>();
 
@@ -59,7 +59,7 @@ public class ElementalWordService
             }
 
             // Recursively call the function again to process the remaining (not empty) string
-            var results = ProcessElementalWords(remainingString);
+            var results = ProcessStringIntoElementalSymbols(remainingString);
 
             foreach (var elementWord in results)
             {
